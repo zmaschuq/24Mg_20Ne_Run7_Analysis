@@ -80,8 +80,7 @@ int main() {
 
                     r_float1 = x_values[k]*cos(rad) + y_values[k]*sin(rad);
                     r_int1 = (int)r_float1;
-                    if (r_int1 <= (float)i + 0.5 && r_int1 >= (float)i - 0.5 
-                    && rad <= (float)angle + 0.5 && rad >= (float)angle - 0.5) {
+                    if (r_int1 <= (float)i + 0.5 && r_int1 >= (float)i - 0.5 ) {
 
                         cout << "X Values: " << x_values[k] << " Y Values: " << y_values[k] <<
                         " Number of Intercepts: " << biggest << endl;
