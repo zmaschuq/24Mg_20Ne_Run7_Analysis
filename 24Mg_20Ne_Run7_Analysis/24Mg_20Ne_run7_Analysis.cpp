@@ -39,7 +39,7 @@ int main() {
     cin >> theta_low >> theta_high >> increment;
 
     difference = theta_high - theta_low;
-    bins = difference/increment;
+    bins = difference/increment + 1;
 
     int rmax = 260 * 2;
     int accumulator[rmax][bins] = {0};
