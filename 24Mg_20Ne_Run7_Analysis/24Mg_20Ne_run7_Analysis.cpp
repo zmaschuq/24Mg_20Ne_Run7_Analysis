@@ -63,6 +63,9 @@ int main() {
     int r_int1;
     float r_float1, radians1; 
     float cut_rmax, cut_rmin, cut_theta_max, cut_theta_min; // Maybe user inputs these values?
+
+    cout << "Define regions of the \'cut\' with rmax, rmin, theta max, and theta min (all floats)" << endl;
+    cin >> cut_rmax >> cut_rmin >> cut_theta_max >> cut_theta_min;
     
     for (int i = 0; i < rmax; i++) {
         int angle = 0;
