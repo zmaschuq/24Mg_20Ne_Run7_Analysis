@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cmath>
 #include <vector>
+#include <iomanip>
 
 #define PI 3.14159
 using namespace std;
@@ -44,15 +45,15 @@ int main() {
     int rmax = 260 * 2;
     int accumulator[rmax][bins] = {0};
     float radians, r_float;
-    int r_int, radians_int;
+    int rounded_rfloat;
 
     for (int i = 0; i < x_values.size(); i++) {
         for (int j = theta_low; j <= theta_high; j+=increment) {
             
                 radians = (float)j * PI/180.0;
                 r_float = x_values[i]*cos(radians) + y_values[i]*sin(radians);
-                r_int = (int)r_float;
-                accumulator[r_int][(j-theta_low)/increment] += 1; 
+                rounded_rfloat = round(r_float);
+                accumulator[rounded_rfloat][(j-theta_low)/increment] += 1; 
         }
     }
 
@@ -80,7 +81,7 @@ int main() {
 
                     r_float1 = x_values[k]*cos(rad) + y_values[k]*sin(rad);
                     r_int1 = (int)r_float1;
-                    if (r_int1 <= (float)i + 0.5 && r_int1 >= (float)i - 0.5 ) {
+                    if (r_int1 <= (float)i + 0.5 && r_int1 >= (float)i - 0.5) {
 
                         cout << "X Values: " << x_values[k] << " Y Values: " << y_values[k] <<
                         " Number of Intercepts: " << biggest << endl;
