@@ -61,14 +61,17 @@ int main() {
     float slopes, intercepts, rad, radial_values;
 
     int r_int1;
-    float r_float1, radians1;
+    float r_float1, radians1; 
+    float cut_rmax, cut_rmin, cut_theta_max, cut_theta_min; // Maybe user inputs these values?
     
     for (int i = 0; i < rmax; i++) {
         int angle = 0;
         
         for (int j = 0; j < bins; j++) {
             angle = theta_low + j*increment;
-            if (accumulator[i][j] > biggest) {
+            
+            if (accumulator[i][j] > 2 && ((float)i <= cut_rmax && (float)i >= cut_rmin)
+            && ((float)j <= cut_theta_max && (float)j >= cut_theta_min)) {
                 
                 biggest = accumulator[i][j];
                 rad = (float)angle * PI/180.0;
