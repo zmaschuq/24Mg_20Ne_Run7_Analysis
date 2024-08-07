@@ -45,7 +45,7 @@ int main() {
     int rmax = 260 * 2;
     int accumulator[rmax][bins] = {0};
     float radians, r_float;
-    int rounded_rfloat;
+    float rounded_rfloat;
 
     for (int i = 0; i < x_values.size(); i++) {
         for (int j = theta_low; j <= theta_high; j+=increment) {
@@ -53,44 +53,47 @@ int main() {
                 radians = (float)j * PI/180.0;
                 r_float = x_values[i]*cos(radians) + y_values[i]*sin(radians);
                 rounded_rfloat = round(r_float);
-                accumulator[rounded_rfloat][(j-theta_low)/increment] += 1; 
+                accumulator[(int)rounded_rfloat + rmax/2][(j-theta_low)/increment] += 1;
         }
     }
-
+    
     int biggest = accumulator[0][0];
     float slopes, intercepts, rad, radial_values;
 
-    int r_int1;
-    float r_float1, radians1; 
-    float cut_rmax, cut_rmin, cut_theta_max, cut_theta_min; // Maybe user inputs these values?
+    int num_intersections;
+    float r_int1, r_float1, radians1; 
+    int cut_rmax, cut_rmin, cut_theta_max, cut_theta_min;
 
-    cout << "Define regions of the \'cut\' with rmax, rmin, theta max, and theta min (all floats)" << endl;
-    cin >> cut_rmax >> cut_rmin >> cut_theta_max >> cut_theta_min;
-    
-    for (int i = 0; i < rmax; i++) {
-        int angle = 0;
+    cout << "Define regions of the \'cut\' with rmax, rmin, theta max, and theta min (ALL INTEGERS)" << endl;
+    cin >> cut_rmax >> cut_rmin >> cut_theta_max >> cut_theta_min; // Make this automatic 
+
+    for (int i = cut_rmin; i < cut_rmax; i++) {
+        int index_j = 0;
         
-        for (int j = 0; j < bins; j++) {
-            angle = theta_low + j*increment;
+        for (int j = cut_theta_min; j <= cut_theta_max; j+=increment) {
+            index_j = j/increment;
             
-            if (accumulator[i][j] > 2 && ((float)i <= cut_rmax && (float)i >= cut_rmin)
-            && ((float)j <= cut_theta_max && (float)j >= cut_theta_min)) {
+            if (accumulator[i][index_j] > 8) {
+                num_intersections = accumulator[i][index_j];
                 
-                biggest = accumulator[i][j];
-                rad = (float)angle * PI/180.0;
-                radial_values = (float)i;
+                if (accumulator[i][index_j] > biggest) {
+                    
+                    biggest = accumulator[i][index_j];
+                    rad = (float)(j + theta_low) * PI/180.0;
+                    radial_values = (float)(i - rmax/2);
 
-                slopes = -cos(rad)/sin(rad);
-                intercepts = radial_values/sin(rad);
-
+                    slopes = -cos(rad)/sin(rad);
+                    intercepts = radial_values/sin(rad);
+                }
+                
                 for (int k = 0; k < x_values.size(); k++) {
 
                     r_float1 = x_values[k]*cos(rad) + y_values[k]*sin(rad);
-                    r_int1 = (int)r_float1;
-                    if (r_int1 <= (float)i + 0.5 && r_int1 >= (float)i - 0.5) {
+                    r_int1 = round(r_float1);
+                    if (r_int1 <= (float)(i - rmax/2) + 1.0 && r_int1 >= (float)(i - rmax/2) - 1.0) {
 
                         cout << "X Values: " << x_values[k] << " Y Values: " << y_values[k] <<
-                        " Number of Intercepts: " << biggest << endl;
+                        " Number of Intercepts: " << num_intersections << endl;
                     }
                 }
             }
